@@ -19,10 +19,16 @@ def index():
 def calcularComidaDia(cantidadPollos, mortalidad, edad, alimentoDia):
     if (edad >= 58) or (edad <= 0):
         return 0
+    if cantidadPollos < mortalidad:
+        return 0
+    
     return ((cantidadPollos - mortalidad) * alimentoDia[edad - 1]) / 1000
 
 def calcularComidaTotal(cantidadPollos, mortalidad, edad, alimentoDia):
     total = []
+    if cantidadPollos < mortalidad:
+        return 0
+
     for i in range(edad, len(alimentoDia)):
         total.append(round(calcularComidaDia(cantidadPollos, mortalidad, i, alimentoDia), 2))
     return total
