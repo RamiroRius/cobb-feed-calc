@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h2>Calculadora de alimento</h2>
+
+    <label>Cantidad de pollos: <input type="number" id="cantidadPollos" value="100"></label><br>
+    <label>Mortalidad: <input type="number" id="mortalidad" value="0"></label><br>
+    <label>Edad (días): <input type="number" id="edad" value="1"></label><br>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <h3>Comida del día: <span id="comidaDia">-</span> kg</h3>
+    <h3>Comida total restante: <span id="comidaTotal">-</span> kg</h3>
+
+    <script>
+        const socket = io();
+
+        function calcular() {
+            const cantidadPollos = document.getElementById("cantidadPollos").value;
+            const mortalidad = document.getElementById("mortalidad").value;
+            const edad = document.getElementById("edad").value;
+
+            socket.emit("calcular", {
+                cantidadPollos: cantidadPollos,
+                mortalidad: mortalidad,
+                edad: edad
+            });
+        }
+
+        socket.on("resultado_calculo", (data) => {
+            document.getElementById("comidaDia").innerText = data.comidaDia;
+            document.getElementById("comidaTotal").innerHTML = data.comidaPorDia.join(" kg<br>");
+        });
+        </script>
+</body>
+</html>
