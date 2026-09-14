@@ -47,17 +47,17 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label for="cantidadPollos" class="block text-xs font-medium text-slate-500 mb-1.5">Cantidad de pollos</label>
-            <input type="number" id="cantidadPollos" value="100"
+            <input type="number" id="cantidadPollos" value="100" min="1"
               class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm tnum focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition">
           </div>
           <div>
             <label for="mortalidad" class="block text-xs font-medium text-slate-500 mb-1.5">Mortalidad (aves)</label>
-            <input type="number" id="mortalidad" value="0"
+            <input type="number" id="mortalidad" value="0" min="0"
               class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm tnum focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition">
           </div>
           <div>
             <label for="edad" class="block text-xs font-medium text-slate-500 mb-1.5">Edad (días)</label>
-            <input type="number" id="edad" value="1"
+            <input type="number" id="edad" value="1" min="9"
               class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-sm tnum focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition">
           </div>
         </div>
@@ -144,10 +144,11 @@
         tbody.innerHTML = "";
 
         data.comidaPorDia.forEach((valor, i) => {
+            const dia = data.edad + i; // día real, no i+1
             const tr = document.createElement("tr");
             tr.className = "hover:bg-slate-50/60 transition-colors";
             tr.innerHTML = `
-                <td class="px-6 py-2.5 text-slate-500 tnum">${i + 1}</td>
+                <td class="px-6 py-2.5 text-slate-500 tnum">${dia}</td>
                 <td class="px-6 py-2.5 font-medium text-slate-800 tnum">${valor}</td>
             `;
             tbody.appendChild(tr);

@@ -12,17 +12,14 @@ cobb500Dataframe = pd.read_csv(CSV_PATH)
 
 alimentoPorDia = cobb500Dataframe['Daily Feed Intake (g)'].tolist()
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 def calcularComidaDia(cantidadPollos, mortalidad, edad, alimentoDia):
     if (edad >= 58) or (edad <= 0):
         return 0
     return ((cantidadPollos - mortalidad) * alimentoDia[edad - 1]) / 1000
-
 
 def calcularComidaTotal(cantidadPollos, mortalidad, edad, alimentoDia):
     total = []
@@ -30,8 +27,6 @@ def calcularComidaTotal(cantidadPollos, mortalidad, edad, alimentoDia):
         total.append(round(calcularComidaDia(cantidadPollos, mortalidad, i, alimentoDia), 2))
     return total
 
-
-# Evento que llega desde el HTML al tocar el botón
 @socketio.on("calcular")
 def manejar_calculo(data):
     cantidadPollos = int(data["cantidadPollos"])
@@ -39,15 +34,15 @@ def manejar_calculo(data):
     edad = int(data["edad"])
 
     comidaDia = calcularComidaDia(cantidadPollos, mortalidad, edad, alimentoPorDia)
-    comidaPorDia = calcularComidaTotal(cantidadPollos, mortalidad, edad, alimentoPorDia)  # lista
-    comidaTotal = round(sum(comidaPorDia), 2)  # si además querés el total sumado
+    comidaPorDia = calcularComidaTotal(cantidadPollos, mortalidad, edad, alimentoPorDia)
+    comidaTotal = round(sum(comidaPorDia), 2)
 
     socketio.emit("resultado_calculo", {
         "comidaDia": comidaDia,
         "comidaPorDia": comidaPorDia,
-        "comidaTotal": comidaTotal
+        "comidaTotal": comidaTotal,
+        "edad": edad
     })
-
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
