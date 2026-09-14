@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from flask import Flask, render_template
 from flask_socketio import SocketIO
@@ -5,7 +6,10 @@ from flask_socketio import SocketIO
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-cobb500Dataframe = pd.read_csv('data/c500.csv')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CSV_PATH = os.path.join(BASE_DIR, '..', 'data', 'c500.csv')
+cobb500Dataframe = pd.read_csv(CSV_PATH)
+
 alimentoPorDia = cobb500Dataframe['Daily Feed Intake (g)'].tolist()
 
 
